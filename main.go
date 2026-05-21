@@ -42,6 +42,10 @@ func masukanpeminjam(B *arrpeminjam, n int) {
 	}
 }
 
+func logiclist(A arrbook)  {
+	
+}
+
 func logicpeminjaman(A *arrbook, B *arrpeminjam, n int) {
 	var i int
 
