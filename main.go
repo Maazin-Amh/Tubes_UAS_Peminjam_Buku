@@ -82,15 +82,46 @@ func masukanpeminjam(P *arrpeminjam, n int) {
 }
 
 func listkomik(A arrbook, n int) {
-	var i int
 
-	for i = 0; i < n; i++ {
+	var i, j int
+	var temp Komik
+	var status string
 
-		fmt.Println("ID :", A[i].id)
-		fmt.Println("Judul :", A[i].judul_buku)
-		fmt.Println("Jumlah :", A[i].jumlah)
-		fmt.Println()
+	fmt.Println("apakah anda ingin di urutkan ? y/n")
+	fmt.Scan(&status)
+
+	if status == "iya" || status == "y" {
+		for i = 0; i < n-1; i++ {
+
+			for j = i + 1; j < n; j++ {
+
+				if A[i].jumlah < A[j].jumlah {
+
+					temp = A[i]
+					A[i] = A[j]
+					A[j] = temp
+
+				}
+			}
+		}
+		for i = 0; i < n; i++ {
+
+			fmt.Println("ID :", A[i].id)
+			fmt.Println("Judul :", A[i].judul_buku)
+			fmt.Println("Jumlah :", A[i].jumlah)
+
+		}
+
+	} else {
+		for i = 0; i < n; i++ {
+
+			fmt.Println("ID :", A[i].id)
+			fmt.Println("Judul :", A[i].judul_buku)
+			fmt.Println("Jumlah :", A[i].jumlah)
+
+		}
 	}
+
 }
 
 func listmember(B arrmember, n int) {
@@ -355,76 +386,115 @@ func main() {
 	var komik arrbook
 	var member arrmember
 	var peminjam arrpeminjam
-	var nKomik, nMember, nPeminjam, menu, totalDenda, totalUang int
+	var nKomik, nMember, nPeminjam, menu, subMenu, totalDenda, totalUang int
 	var ulang string
 
 	ulang = "y"
 
 	for ulang == "iya" || ulang == "y" {
 
-		fmt.Println("\n===== MENU =====")
-		fmt.Println("1. Tambah Komik")
-		fmt.Println("2. List Komik")
-		fmt.Println("3. Edit Komik")
-		fmt.Println("4. Hapus Komik")
-		fmt.Println("5. Tambah Member")
-		fmt.Println("6. List Member")
-		fmt.Println("7. Edit Member")
-		fmt.Println("8. Hapus Member")
-		fmt.Println("9. Tambah Peminjam")
-		fmt.Println("10. List Peminjam")
-		fmt.Println("11. Edit Peminjam")
-		fmt.Println("12. Hapus Peminjam")
-		fmt.Println("13. Cari Komik")
-		fmt.Println("14. Cari Member")
-		fmt.Println("15. Hitung Total Denda")
-		fmt.Println("16. Hitung Total Uang")
+		fmt.Println("\n===== MENU UTAMA =====")
+		fmt.Println("1. Kelola Komik")
+		fmt.Println("2. Kelola Member")
+		fmt.Println("3. Kelola Peminjaman")
+		fmt.Println("4. Keuangan & Pendapatan")
 		fmt.Println("0. Keluar")
 
 		fmt.Print("Masukan pilihan : ")
 		fmt.Scan(&menu)
 
 		if menu == 1 {
-			fmt.Print("Jumlah komik : ")
-			fmt.Scan(&nKomik)
-			masukankomik(&komik, nKomik)
+			fmt.Println("\n--- Kelola Komik ---")
+			fmt.Println("1. Tambah Komik")
+			fmt.Println("2. List Komik")
+			fmt.Println("3. Edit Komik")
+			fmt.Println("4. Hapus Komik")
+			fmt.Println("5. Cari Komik")
+			fmt.Print("Pilih aksi : ")
+			fmt.Scan(&subMenu)
+
+			if subMenu == 1 {
+				fmt.Print("Jumlah komik : ")
+				fmt.Scan(&nKomik)
+				masukankomik(&komik, nKomik)
+			} else if subMenu == 2 {
+				listkomik(komik, nKomik)
+			} else if subMenu == 3 {
+				editkomik(&komik, nKomik)
+			} else if subMenu == 4 {
+				hapuskomik(&komik, &nKomik)
+			} else if subMenu == 5 {
+				tampilCariKomik(komik, nKomik)
+			} else {
+				fmt.Println("Aksi tidak valid")
+			}
+
 		} else if menu == 2 {
-			listkomik(komik, nKomik)
+			fmt.Println("\n--- Kelola Member ---")
+			fmt.Println("1. Tambah Member")
+			fmt.Println("2. List Member")
+			fmt.Println("3. Edit Member")
+			fmt.Println("4. Hapus Member")
+			fmt.Println("5. Cari Member")
+			fmt.Print("Pilih aksi : ")
+			fmt.Scan(&subMenu)
+
+			if subMenu == 1 {
+				fmt.Print("Jumlah member : ")
+				fmt.Scan(&nMember)
+				masukanmember(&member, nMember)
+			} else if subMenu == 2 {
+				listmember(member, nMember)
+			} else if subMenu == 3 {
+				editmember(&member, nMember)
+			} else if subMenu == 4 {
+				hapusmember(&member, &nMember)
+			} else if subMenu == 5 {
+				tampilCariMember(member, nMember)
+			} else {
+				fmt.Println("Aksi tidak valid")
+			}
+
 		} else if menu == 3 {
-			editkomik(&komik, nKomik)
+			fmt.Println("\n--- Kelola Peminjaman ---")
+			fmt.Println("1. Tambah Peminjam")
+			fmt.Println("2. List Peminjam")
+			fmt.Println("3. Edit Peminjam")
+			fmt.Println("4. Hapus Peminjam")
+			fmt.Print("Pilih aksi : ")
+			fmt.Scan(&subMenu)
+
+			if subMenu == 1 {
+				fmt.Print("Jumlah peminjam : ")
+				fmt.Scan(&nPeminjam)
+				masukanpeminjam(&peminjam, nPeminjam)
+			} else if subMenu == 2 {
+				listpeminjam(peminjam, nPeminjam)
+			} else if subMenu == 3 {
+				editpeminjam(&peminjam, nPeminjam)
+			} else if subMenu == 4 {
+				hapuspeminjam(&peminjam, &nPeminjam)
+			} else {
+				fmt.Println("Aksi tidak valid")
+			}
+
 		} else if menu == 4 {
-			hapuskomik(&komik, &nKomik)
-		} else if menu == 5 {
-			fmt.Print("Jumlah member : ")
-			fmt.Scan(&nMember)
-			masukanmember(&member, nMember)
-		} else if menu == 6 {
-			listmember(member, nMember)
-		} else if menu == 7 {
-			editmember(&member, nMember)
-		} else if menu == 8 {
-			hapusmember(&member, &nMember)
-		} else if menu == 9 {
-			fmt.Print("Jumlah peminjam : ")
-			fmt.Scan(&nPeminjam)
-			masukanpeminjam(&peminjam, nPeminjam)
-		} else if menu == 10 {
-			listpeminjam(peminjam, nPeminjam)
-		} else if menu == 11 {
-			editpeminjam(&peminjam, nPeminjam)
-		} else if menu == 12 {
-			hapuspeminjam(&peminjam, &nPeminjam)
-		} else if menu == 13 {
-			tampilCariKomik(komik, nKomik)
-		} else if menu == 14 {
-			tampilCariMember(member, nMember)
-		} else if menu == 15 {
-			totalDenda = hitungTotalDenda(peminjam, nPeminjam)
-			fmt.Println("Total Denda :", totalDenda)
-		} else if menu == 16 {
-			totalDenda = hitungTotalDenda(peminjam, nPeminjam)
-			totalUang = hitungTotalUang(nMember, totalDenda)
-			fmt.Println("Total Uang :", totalUang)
+			fmt.Println("\n--- Keuangan & Pendapatan ---")
+			fmt.Println("1. Hitung Total Denda")
+			fmt.Println("2. Hitung Total Uang")
+			fmt.Print("Pilih aksi : ")
+			fmt.Scan(&subMenu)
+
+			if subMenu == 1 {
+				totalDenda = hitungTotalDenda(peminjam, nPeminjam)
+				fmt.Println("Total Denda :", totalDenda)
+			} else if subMenu == 2 {
+				totalDenda = hitungTotalDenda(peminjam, nPeminjam)
+				totalUang = hitungTotalUang(nMember, totalDenda)
+				fmt.Println("Total Uang :", totalUang)
+			} else {
+				fmt.Println("Aksi tidak valid")
+			}
 
 		} else if menu == 0 {
 			fmt.Println("Program selesai")
