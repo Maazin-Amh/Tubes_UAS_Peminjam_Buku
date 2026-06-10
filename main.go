@@ -32,7 +32,7 @@ type arrpeminjam [NMAX]peminjam
 func masukankomik(A *arrbook, n int) {
 	var i int
 
-	for i = 0; i < n; i++ {
+	for i = 1; i < n; i++ {
 
 		A[i].id = i + 1
 
@@ -83,7 +83,7 @@ func masukanpeminjam(P *arrpeminjam, n int) {
 
 func listkomik(A arrbook, n int) {
 
-	var i, j int
+	var i, j, pilihan int
 	var temp Komik
 	var status string
 
@@ -91,34 +91,63 @@ func listkomik(A arrbook, n int) {
 	fmt.Scan(&status)
 
 	if status == "iya" || status == "y" {
-		for i = 0; i < n-1; i++ {
+		fmt.Println("1. urutkan dari jumlah kecil ke besar")
+		fmt.Println("2. urutkan dari jumlah besar ke kecil")
+		fmt.Scan(&pilihan)
 
-			for j = i + 1; j < n; j++ {
+		if pilihan == 1 {
+			for i = 0; i < n-1; i++ {
 
-				if A[i].jumlah < A[j].jumlah {
+				for j = i + 1; j < n; j++ {
 
-					temp = A[i]
-					A[i] = A[j]
-					A[j] = temp
+					if A[i].jumlah < A[j].jumlah {
+
+						temp = A[i]
+						A[i] = A[j]
+						A[j] = temp
+
+					}
+				}
+			}
+			for i = 0; i < n; i++ {
+
+				fmt.Println("ID :", A[i].id)
+				fmt.Println("Judul :", A[i].judul_buku)
+				fmt.Println("Jumlah :", A[i].jumlah)
+
+			}
+		} else if pilihan == 2 {
+			if pilihan == 1 {
+				for i = 0; i < n-1; i++ {
+
+					for j = i + 1; j < n; j++ {
+
+						if A[i].jumlah < A[j].jumlah {
+
+							temp = A[i]
+							A[i] = A[j]
+							A[j] = temp
+
+						}
+					}
+				}
+				for i = 0; i < n; i++ {
+
+					fmt.Println("ID :", A[i].id)
+					fmt.Println("Judul :", A[i].judul_buku)
+					fmt.Println("Jumlah :", A[i].jumlah)
 
 				}
 			}
-		}
-		for i = 0; i < n; i++ {
 
-			fmt.Println("ID :", A[i].id)
-			fmt.Println("Judul :", A[i].judul_buku)
-			fmt.Println("Jumlah :", A[i].jumlah)
+		} else {
+			for i = 0; i < n; i++ {
 
-		}
+				fmt.Println("ID :", A[i].id)
+				fmt.Println("Judul :", A[i].judul_buku)
+				fmt.Println("Jumlah :", A[i].jumlah)
 
-	} else {
-		for i = 0; i < n; i++ {
-
-			fmt.Println("ID :", A[i].id)
-			fmt.Println("Judul :", A[i].judul_buku)
-			fmt.Println("Jumlah :", A[i].jumlah)
-
+			}
 		}
 	}
 
@@ -153,7 +182,6 @@ func listpeminjam(P arrpeminjam, n int) {
 		fmt.Println("Jumlah :", P[i].jumlah)
 		fmt.Println("Terlambat :", P[i].keterlambatan)
 		fmt.Println("Denda :", P[i].denda)
-		fmt.Println()
 	}
 }
 
@@ -393,7 +421,7 @@ func main() {
 
 	for ulang == "iya" || ulang == "y" {
 
-		fmt.Println("\n===== MENU UTAMA =====")
+		fmt.Println("\n------- MENU UTAMA -------")
 		fmt.Println("1. Kelola Komik")
 		fmt.Println("2. Kelola Member")
 		fmt.Println("3. Kelola Peminjaman")
