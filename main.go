@@ -32,7 +32,7 @@ type arrpeminjam [NMAX]peminjam
 func masukankomik(A *arrbook, n int) {
 	var i int
 
-	for i = 1; i < n; i++ {
+	for i = 0; i < n; i++ {
 
 		A[i].id = i + 1
 
@@ -82,75 +82,61 @@ func masukanpeminjam(P *arrpeminjam, n int) {
 }
 
 func listkomik(A arrbook, n int) {
-
-	var i, j, pilihan int
+	var i, pass, idx, pilihan int
 	var temp Komik
 	var status string
 
-	fmt.Println("apakah anda ingin di urutkan ? y/n")
+	fmt.Println("Apakah anda ingin diurutkan? y/n")
 	fmt.Scan(&status)
 
-	if status == "iya" || status == "y" {
-		fmt.Println("1. urutkan dari jumlah kecil ke besar")
-		fmt.Println("2. urutkan dari jumlah besar ke kecil")
+	if status == "y" || status == "iya" {
+
+		fmt.Println("1. Jumlah terbesar ke terkecil")
+		fmt.Println("2. Jumlah terkecil ke terbesar")
 		fmt.Scan(&pilihan)
 
 		if pilihan == 1 {
-			for i = 0; i < n-1; i++ {
+			for pass = 1; pass <= n-1; pass++ {
+				idx = pass - 1
+				i = pass
 
-				for j = i + 1; j < n; j++ {
-
-					if A[i].jumlah < A[j].jumlah {
-
-						temp = A[i]
-						A[i] = A[j]
-						A[j] = temp
-
+				for i < n {
+					if A[idx].jumlah < A[i].jumlah {
+						idx = i
 					}
+					i++
 				}
-			}
-			for i = 0; i < n; i++ {
 
-				fmt.Println("ID :", A[i].id)
-				fmt.Println("Judul :", A[i].judul_buku)
-				fmt.Println("Jumlah :", A[i].jumlah)
-
+				temp = A[pass-1]
+				A[pass-1] = A[idx]
+				A[idx] = temp
 			}
+
 		} else if pilihan == 2 {
-			if pilihan == 1 {
-				for i = 0; i < n-1; i++ {
+			for pass = 1; pass <= n-1; pass++ {
+				idx = pass - 1
+				i = pass
 
-					for j = i + 1; j < n; j++ {
-
-						if A[i].jumlah < A[j].jumlah {
-
-							temp = A[i]
-							A[i] = A[j]
-							A[j] = temp
-
-						}
+				for i < n {
+					if A[idx].jumlah > A[i].jumlah {
+						idx = i
 					}
+					i++
 				}
-				for i = 0; i < n; i++ {
 
-					fmt.Println("ID :", A[i].id)
-					fmt.Println("Judul :", A[i].judul_buku)
-					fmt.Println("Jumlah :", A[i].jumlah)
-
-				}
-			}
-
-		} else {
-			for i = 0; i < n; i++ {
-
-				fmt.Println("ID :", A[i].id)
-				fmt.Println("Judul :", A[i].judul_buku)
-				fmt.Println("Jumlah :", A[i].jumlah)
-
+				temp = A[pass-1]
+				A[pass-1] = A[idx]
+				A[idx] = temp
 			}
 		}
 	}
 
+	for i = 0; i < n; i++ {
+		fmt.Println("ID :", A[i].id)
+		fmt.Println("Judul :", A[i].judul_buku)
+		fmt.Println("Jumlah :", A[i].jumlah)
+		fmt.Println()
+	}
 }
 
 func listmember(B arrmember, n int) {
@@ -162,9 +148,9 @@ func listmember(B arrmember, n int) {
 		fmt.Println("Nama :", B[i].nama)
 
 		if B[i].status {
-			fmt.Println("Status : aktif")
+			fmt.Println("Status : terdaftar")
 		} else {
-			fmt.Println("Status : tidak aktif")
+			fmt.Println("Status : tidak terdaftar")
 		}
 
 		fmt.Println()
@@ -172,10 +158,45 @@ func listmember(B arrmember, n int) {
 }
 
 func listpeminjam(P arrpeminjam, n int) {
-	var i int
+	var pass, i, pilihan int
+	var status string
+	var temp peminjam
+
+	fmt.Println("Apakah anda ingin diurutkan? y/n")
+	fmt.Scan(&status)
+
+	if status == "y" || status == "iya" {
+
+		fmt.Println("1. denda terbesar ke terkecil")
+		fmt.Println("2. denda terkecil ke terbesar")
+		fmt.Scan(&pilihan)
+
+		if pilihan == 1 {
+			for pass = 1; pass > n; pass++ {
+				i = pass
+				temp = P[pass]
+				for i > 0 && temp.denda < P[i-1].denda {
+					P[i] = P[i-1]
+					i--
+				}
+				P[i] = temp
+			}
+		} else if pilihan == 2 {
+			for pass = 1; pass < n; pass++ {
+				i = pass
+				temp = P[pass]
+				for i > 0 && temp.denda < P[i-1].denda {
+					P[i] = P[i-1]
+					i--
+				}
+				P[i] = temp
+			}
+		} else {
+			println("angka yang dipilih tidak tersedia ")
+		}
+	}
 
 	for i = 0; i < n; i++ {
-
 		fmt.Println("ID :", P[i].id)
 		fmt.Println("ID Komik :", P[i].idkomik)
 		fmt.Println("ID Member :", P[i].idmember)
@@ -186,11 +207,19 @@ func listpeminjam(P arrpeminjam, n int) {
 }
 
 func carikomik(A arrbook, n, id int) int {
-	var i int
+	var left, right, mid int
 
-	for i = 0; i < n; i++ {
-		if A[i].id == id {
-			return i
+	left = 0
+	right = n - 1
+
+	for left <= right {
+		mid = (left + right) / 2
+		if A[mid].id == id {
+			return mid
+		} else if A[mid].id > id {
+			right = mid - 1
+		} else if A[mid].id < id {
+			left = mid + 1
 		}
 	}
 
