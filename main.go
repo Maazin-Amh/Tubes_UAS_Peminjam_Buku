@@ -457,7 +457,7 @@ func main() {
 		fmt.Println("4. Keuangan & Pendapatan")
 		fmt.Println("0. Keluar")
 
-		fmt.Print("Masukan pilihan : ")
+		fmt.Print("Pilih Menu : ")
 		fmt.Scan(&menu)
 
 		if menu == 1 {
