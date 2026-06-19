@@ -10,13 +10,13 @@ type Komik struct {
 	jumlah     int
 }
 
-type member struct {
+type Member struct {
 	id     int
 	nama   string
 	status bool
 }
 
-type peminjam struct {
+type Peminjam struct {
 	id            int
 	idkomik       int
 	idmember      int
@@ -26,14 +26,13 @@ type peminjam struct {
 }
 
 type arrbook [NMAX]Komik
-type arrmember [NMAX]member
-type arrpeminjam [NMAX]peminjam
+type arrmember [NMAX]Member
+type arrpeminjam [NMAX]Peminjam
 
-func masukankomik(A *arrbook, n int) {
+func masukankomik(A *arrbook, nAwal, tambah int) {
 	var i int
 
-	for i = 0; i < n; i++ {
-
+	for i = nAwal; i < nAwal+tambah; i++ {
 		A[i].id = i + 1
 
 		fmt.Print("Masukan judul buku : ")
@@ -44,11 +43,10 @@ func masukankomik(A *arrbook, n int) {
 	}
 }
 
-func masukanmember(B *arrmember, n int) {
+func masukanmember(B *arrmember, nAwal, tambah int) {
 	var i int
 
-	for i = 0; i < n; i++ {
-
+	for i = nAwal; i < nAwal+tambah; i++ {
 		B[i].id = i + 1
 
 		fmt.Print("Masukan nama member : ")
@@ -58,11 +56,10 @@ func masukanmember(B *arrmember, n int) {
 	}
 }
 
-func masukanpeminjam(P *arrpeminjam, n int) {
+func masukanpeminjam(P *arrpeminjam, nAwal, tambah int) {
 	var i int
 
-	for i = 0; i < n; i++ {
-
+	for i = nAwal; i < nAwal+tambah; i++ {
 		P[i].id = i + 1
 
 		fmt.Print("Masukan ID Komik : ")
@@ -160,7 +157,7 @@ func listmember(B arrmember, n int) {
 func listpeminjam(P arrpeminjam, n int) {
 	var pass, i, pilihan int
 	var status string
-	var temp peminjam
+	var temp Peminjam
 
 	fmt.Println("Apakah anda ingin diurutkan? y/n")
 	fmt.Scan(&status)
@@ -172,10 +169,10 @@ func listpeminjam(P arrpeminjam, n int) {
 		fmt.Scan(&pilihan)
 
 		if pilihan == 1 {
-			for pass = 1; pass > n; pass++ {
+			for pass = 1; pass < n; pass++ {
 				i = pass
 				temp = P[pass]
-				for i > 0 && temp.denda < P[i-1].denda {
+				for i > 0 && temp.denda > P[i-1].denda {
 					P[i] = P[i-1]
 					i--
 				}
@@ -443,8 +440,22 @@ func main() {
 	var komik arrbook
 	var member arrmember
 	var peminjam arrpeminjam
-	var nKomik, nMember, nPeminjam, menu, subMenu, totalDenda, totalUang int
+	var nKomik, nMember, nPeminjam, menu, subMenu, tambah, totalDenda, totalUang int
 	var ulang string
+	nKomik = 3
+	nMember = 3
+	nPeminjam = 3
+	komik[0] = Komik{1, "Naruto", 15}
+	komik[1] = Komik{2, "OnePiece", 20}
+	komik[2] = Komik{3, "Bleach", 8}
+
+	member[0] = Member{1, "rafi", true}
+	member[1] = Member{2, "dimas", true}
+	member[2] = Member{3, "ariq", true}
+
+	peminjam[0] = Peminjam{1, 1, 1, 2, 3, 15000}
+	peminjam[1] = Peminjam{2, 2, 2, 1, 0, 0}
+	peminjam[2] = Peminjam{3, 3, 3, 1, 5, 25000}
 
 	ulang = "y"
 
@@ -471,9 +482,10 @@ func main() {
 			fmt.Scan(&subMenu)
 
 			if subMenu == 1 {
-				fmt.Print("Jumlah komik : ")
-				fmt.Scan(&nKomik)
-				masukankomik(&komik, nKomik)
+				fmt.Print("Jumlah komik yang ingin ditambah : ")
+				fmt.Scan(&tambah)
+				masukankomik(&komik, nKomik, tambah)
+				nKomik += tambah
 			} else if subMenu == 2 {
 				listkomik(komik, nKomik)
 			} else if subMenu == 3 {
@@ -497,9 +509,10 @@ func main() {
 			fmt.Scan(&subMenu)
 
 			if subMenu == 1 {
-				fmt.Print("Jumlah member : ")
-				fmt.Scan(&nMember)
-				masukanmember(&member, nMember)
+				fmt.Print("Jumlah member yang ingin ditambah : ")
+				fmt.Scan(&tambah)
+				masukanmember(&member, nMember, tambah)
+				nMember += tambah
 			} else if subMenu == 2 {
 				listmember(member, nMember)
 			} else if subMenu == 3 {
@@ -522,9 +535,10 @@ func main() {
 			fmt.Scan(&subMenu)
 
 			if subMenu == 1 {
-				fmt.Print("Jumlah peminjam : ")
-				fmt.Scan(&nPeminjam)
-				masukanpeminjam(&peminjam, nPeminjam)
+				fmt.Print("Jumlah peminjam yang ingin ditambah : ")
+				fmt.Scan(&tambah)
+				masukanpeminjam(&peminjam, nPeminjam, tambah)
+				nPeminjam += tambah
 			} else if subMenu == 2 {
 				listpeminjam(peminjam, nPeminjam)
 			} else if subMenu == 3 {
